@@ -5,21 +5,7 @@
 
 package com.assertthat.selenium_shutterbug.utils.web;
 
-import com.assertthat.selenium_shutterbug.utils.file.FileUtil;
-import com.github.zafarkhaja.semver.Version;
-import com.google.common.collect.ImmutableMap;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.remote.*;
-import org.openqa.selenium.remote.http.HttpMethod;
-import org.openqa.selenium.support.ui.FluentWait;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -32,6 +18,33 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.function.Function;
+
+import javax.imageio.ImageIO;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.CommandExecutor;
+import org.openqa.selenium.remote.CommandInfo;
+import org.openqa.selenium.remote.HttpCommandExecutor;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.Response;
+import org.openqa.selenium.remote.TracedCommandExecutor;
+import org.openqa.selenium.remote.http.HttpMethod;
+import org.openqa.selenium.support.ui.FluentWait;
+
+import com.assertthat.selenium_shutterbug.utils.file.FileUtil;
+import com.github.zafarkhaja.semver.Version;
+import com.google.common.collect.ImmutableMap;
 
 /**
  * Created by GlibBriia on 17/06/2016.
@@ -149,7 +162,7 @@ public class Browser {
         } else if (driver instanceof FirefoxDriver) {
             return takeFullPageScreenshotGeckoDriver();
         } else if (driver instanceof RemoteWebDriver) {
-            if (((RemoteWebDriver) driver).getCapabilities().getBrowserName().equals("chrome")
+            if (((RemoteWebDriver) driver).getCapabilities().getBrowserName().contains("chrome")
                     || ((RemoteWebDriver) driver).getCapabilities().getBrowserName().equals("MicrosoftEdge")
                     || ((RemoteWebDriver) driver).getCapabilities().getBrowserName().equals("msedge")) {
                 return takeFullPageScreenshotChromeCommand();
@@ -175,7 +188,7 @@ public class Browser {
         } else if (driver instanceof FirefoxDriver) {
             return takeFullPageScreenshotGeckoDriver();
         } else if (driver instanceof RemoteWebDriver) {
-            if (((RemoteWebDriver) driver).getCapabilities().getBrowserName().equals("chrome") || ((RemoteWebDriver) driver).getCapabilities().getBrowserName().equals("MicrosoftEdge")) {
+            if (((RemoteWebDriver) driver).getCapabilities().getBrowserName().contains("chrome") || ((RemoteWebDriver) driver).getCapabilities().getBrowserName().equals("MicrosoftEdge")) {
                 return takeFullPageScreenshotChromeCommand();
             } else if (((RemoteWebDriver) driver).getCapabilities().getBrowserName().equals("firefox")) {
                 return takeFullPageScreenshotGeckoDriver();
